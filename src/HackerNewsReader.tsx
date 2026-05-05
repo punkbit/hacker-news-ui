@@ -5,6 +5,7 @@ import StoryCard from './components/StoryCard'
 import LoadingState from './components/LoadingState'
 import ErrorState from './components/ErrorState'
 import CtaButton from './components/CtaButton'
+import ScrollDownTip from './components/ScrollDownTip'
 import Logo from './Icons/Logo'
 import type { HackerNewsReaderProps, StoryData } from './types'
 
@@ -64,6 +65,23 @@ const ScrollableLogoContainer = styled.div`
   }
 `
 
+const BlackLogoContainer = styled.div<{ hide: boolean }>`
+  transition: opacity 0.3s;
+  & > svg {
+    width: 50px;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    transition: opacity 0.3s;
+    opacity: ${(props) => props.hide ? '0' : '1'};
+    cursor: pointer;
+  }
+
+  &:hover {
+    opacity: 0.74;
+  }
+`
+
 // Constants for scroll calculations
 const SCROLL_CONTAINER_TOP_RATIO = 0.398
 const SCROLL_CONTAINER_BOTTOM_RATIO = 0.3
@@ -87,6 +105,7 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
     bottom: { y: 0 }
   })
   const [isVisible, setIsVisible] = useState<boolean>(false)
+  const [hideScrollTip, setHideScrollTip] = useState<boolean>(false)
   const contentRef = useRef<HTMLDivElement>(null)
   
   const { loading, error, stories, fetchMore } = useStories({
@@ -104,6 +123,10 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
       center: { y: -scrollY },
       bottom: { y: -(scrollY + offsetBottom) }
     })
+    
+    // Hide scroll tip after scrolling past screen height
+    const hide = scrollY > (window.screen.availHeight * 1.1)
+    setHideScrollTip(hide)
   }, [])
 
   const measureHeight = useCallback(() => {
@@ -188,53 +211,59 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
   }
 
   return (
-    <ScrollWrapper height={height} className={className}>
-      <ScrollableListContainer>
-        <ScrollableListTop>
-          <ScrollableListContent posY={scrollPosition.top.y}>
-            <ScrollableLogoContainer>
-              {logoComponent}
-            </ScrollableLogoContainer>
-            {renderStoryList(stories, 'top')}
-            {enableLoadMore && (
-              <CtaButton onClick={loadMoreHandler}>
-                Load more...
-              </CtaButton>
-            )}
-          </ScrollableListContent>
-        </ScrollableListTop>
-        
-        <ScrollableListCenter>
-          <ScrollableListContent posY={scrollPosition.center.y}>
-            <div ref={contentRef}>
+    <>
+      <ScrollDownTip hide={hideScrollTip} />
+      <ScrollWrapper height={height} className={className}>
+        <ScrollableListContainer>
+          <ScrollableListTop>
+            <ScrollableListContent posY={scrollPosition.top.y}>
               <ScrollableLogoContainer>
                 {logoComponent}
               </ScrollableLogoContainer>
-              {renderStoryList(stories, 'center')}
+              {renderStoryList(stories, 'top')}
               {enableLoadMore && (
                 <CtaButton onClick={loadMoreHandler}>
                   Load more...
                 </CtaButton>
               )}
-            </div>
-          </ScrollableListContent>
-        </ScrollableListCenter>
-        
-        <ScrollableListBottom>
-          <ScrollableListContent posY={scrollPosition.bottom.y}>
-            <ScrollableLogoContainer>
-              {logoComponent}
-            </ScrollableLogoContainer>
-            {renderStoryList(stories, 'bottom')}
-            {enableLoadMore && (
-              <CtaButton onClick={loadMoreHandler}>
-                Load more...
-              </CtaButton>
-            )}
-          </ScrollableListContent>
-        </ScrollableListBottom>
-      </ScrollableListContainer>
-    </ScrollWrapper>
+            </ScrollableListContent>
+          </ScrollableListTop>
+          
+          <ScrollableListCenter>
+            <ScrollableListContent posY={scrollPosition.center.y}>
+              <div ref={contentRef}>
+                <ScrollableLogoContainer>
+                  {logoComponent}
+                </ScrollableLogoContainer>
+                {renderStoryList(stories, 'center')}
+                {enableLoadMore && (
+                  <CtaButton onClick={loadMoreHandler}>
+                    Load more...
+                  </CtaButton>
+                )}
+              </div>
+            </ScrollableListContent>
+          </ScrollableListCenter>
+          
+          <ScrollableListBottom>
+            <ScrollableListContent posY={scrollPosition.bottom.y}>
+              <ScrollableLogoContainer>
+                {logoComponent}
+              </ScrollableLogoContainer>
+              {renderStoryList(stories, 'bottom')}
+              {enableLoadMore && (
+                <CtaButton onClick={loadMoreHandler}>
+                  Load more...
+                </CtaButton>
+              )}
+            </ScrollableListContent>
+          </ScrollableListBottom>
+        </ScrollableListContainer>
+      </ScrollWrapper>
+      <BlackLogoContainer hide={!hideScrollTip}>
+        <Logo black={true} />
+      </BlackLogoContainer>
+    </>
   )
 }
 
