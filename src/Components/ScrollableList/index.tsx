@@ -62,15 +62,19 @@ const ScrollableList: React.FC<IPropsScrollableList> = (props) => {
     setIsVisible(true)
   }, [setIsVisible])
 
+  // Use a timeout to ensure DOM is updated before measuring
   useEffect(() => {
-    const measuredHeight = contentRef.current?.clientHeight
-    console.log('Height calculation:', { measuredHeight, contentRef: contentRef.current })
-    if (measuredHeight && measuredHeight > 0) {
-      const newHeight = measuredHeight * 1.15
-      console.log('Setting height to:', newHeight)
-      setHeight(newHeight)
-    }
-  }, [isVisible, stories])
+    const timer = setTimeout(() => {
+      const measuredHeight = contentRef.current?.clientHeight
+      console.log('Height calculation (delayed):', { measuredHeight, contentRef: contentRef.current, storiesLoaded: stories?.length })
+      if (measuredHeight && measuredHeight > 0) {
+        const newHeight = measuredHeight * 1.15
+        console.log('Setting height to:', newHeight)
+        setHeight(newHeight)
+      }
+    }, 100) // Small delay to let React render the DOM
+    return () => clearTimeout(timer)
+  }, [isVisible, stories, loading])
 
   useEffect(() => {
     scrollToHandler()
