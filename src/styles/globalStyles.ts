@@ -10,8 +10,6 @@ export const themeConf = {
 }
 
 export const DefaultStyles = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css?family=Bitter|Nanum+Gothic|Work+Sans&display=swap');
-
   * {
     text-decoration: none;
     margin: 0;
