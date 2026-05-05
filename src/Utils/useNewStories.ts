@@ -25,17 +25,22 @@ async function fetchItem(id: number): Promise<INewStories | null> {
       by: { id: item.by || '' },
       __typename: 'Story'
     }
-  } catch {
+  } catch (err) {
+    console.error(`Failed to fetch item ${id}:`, err)
     return null
   }
 }
 
 async function fetchStories(offset: number, limit: number): Promise<INewStories[]> {
+  console.log(`Fetching stories: offset=${offset}, limit=${limit}`)
   const res = await fetch(`${HN_API}/newstories.json`)
   const allIds: number[] = await res.json()
+  console.log(`Got ${allIds.length} total story IDs, fetching ${limit} from offset ${offset}`)
   const ids = allIds.slice(offset, offset + limit)
   const items = await Promise.all(ids.map(fetchItem))
-  return items.filter((item): item is INewStories => item !== null)
+  const validItems = items.filter((item): item is INewStories => item !== null)
+  console.log(`Fetched ${validItems.length} valid stories`)
+  return validItems
 }
 
 export function useNewStories(): UseNewStoriesResult {
@@ -58,8 +63,10 @@ export function useNewStories(): UseNewStoriesResult {
           setStories(newStories)
           setOffset(newStories.length)
           setLoading(false)
+          console.log(`Loaded ${newStories.length} initial stories`)
         }
       } catch (err) {
+        console.error('Error loading stories:', err)
         if (!cancelled) {
           setError(err instanceof Error ? err : new Error('Failed to fetch stories'))
           setLoading(false)
