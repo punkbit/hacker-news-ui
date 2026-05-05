@@ -89,7 +89,6 @@ const SCROLL_CONTAINER_BOTTOM_RATIO = 0.3
 const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
   apiUrl = 'https://hacker-news.firebaseio.com/v0',
   initialCount = 30,
-  theme,
   className,
   enableLoadMore = true,
   onStoryClick,

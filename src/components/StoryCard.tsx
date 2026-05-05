@@ -18,7 +18,7 @@ const StoryContainer = styled.div`
   position: relative;
 
   &:hover {
-    background: ${(props) => props.theme.orange};
+    background: ${(props) => (props.theme as any).orange};
 
     & span {
       opacity: 0.7;
@@ -36,7 +36,7 @@ const StoryContainer = styled.div`
     right: 0;
     font-size: 2rem;
     opacity: 0;
-    background: ${(props) => props.theme.platinum};
+    background: ${(props) => (props.theme as any).platinum};
   }
 `
 

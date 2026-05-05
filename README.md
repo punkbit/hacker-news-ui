@@ -75,19 +75,14 @@ function App() {
 />
 ```
 
-## Requirements
+## Fonts
 
-**Fonts:** The component uses Google Fonts (loaded automatically):
-- 'Bitter' - Primary text font
-- 'Work Sans' - Headings
-- 'Nanum Gothic' - Author names
+Google Fonts are loaded automatically when you use `DefaultStyles`:
+- **Bitter** - Primary text font
+- **Work Sans** - Headings
+- **Nanum Gothic** - Author names
 
-Include in your HTML head:
-```html
-<style>
-  @import url('https://fonts.googleapis.com/css?family=Bitter|Nanum+Gothic|Work+Sans&display=swap');
-</style>
-```
+No manual font loading required!
 
 ## Development
 
@@ -103,7 +98,3 @@ npm run dev      # Development mode with example
 npm run build
 npm publish
 ```
-
-## License
-
-MIT
