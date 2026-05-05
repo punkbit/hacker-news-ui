@@ -36,13 +36,6 @@ interface INewStories {
   __typename: string
 }
 
-interface IUseQueryResponse {
-  hn: {
-    __typename: string,
-    newStories: INewStories[]
-  }
-}
-
 interface IPropsScroll {
   hide: boolean
 }
@@ -55,6 +48,5 @@ export {
   IPropsScrollPosition,
   IPropsScrollableListContent,
   INewStories,
-  IPropsScroll,
-  IUseQueryResponse
+  IPropsScroll
 }
