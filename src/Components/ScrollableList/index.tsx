@@ -40,6 +40,7 @@ const ScrollableList: React.FC<IPropsScrollableList> = (props) => {
     const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop
     const offsetTop = getOffsetValue(SCROLL_CONTAINER_TOP)
     const offsetBottom = getOffsetValue(SCROLL_CONTAINER_BOTTOM)
+    console.log('Scroll event:', { scrollY, offsetTop, offsetBottom, documentHeight: document.documentElement.scrollHeight, windowHeight: window.innerHeight })
     setScrollPosition({
       top: {
         y: -(scrollY-offsetTop)
@@ -62,9 +63,13 @@ const ScrollableList: React.FC<IPropsScrollableList> = (props) => {
   }, [setIsVisible])
 
   useEffect(() => {
-    const height = contentRef.current?.clientHeight
-    height &&
-    setHeight(height * 1.15) // extra height to compensate scroll to main middle content
+    const measuredHeight = contentRef.current?.clientHeight
+    console.log('Height calculation:', { measuredHeight, contentRef: contentRef.current })
+    if (measuredHeight && measuredHeight > 0) {
+      const newHeight = measuredHeight * 1.15
+      console.log('Setting height to:', newHeight)
+      setHeight(newHeight)
+    }
   }, [isVisible, stories])
 
   useEffect(() => {
@@ -79,7 +84,7 @@ const ScrollableList: React.FC<IPropsScrollableList> = (props) => {
   }, [isVisible, scrollToHandler])
 
 
-  console.log('Render state:', { isVisible, loading, storiesCount: stories?.length, error })
+  console.log('Render state:', { isVisible, loading, storiesCount: stories?.length, height, scrollY: window.scrollY, error })
 
   if (error) return <Error error={error} />
 
