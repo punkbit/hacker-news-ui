@@ -79,6 +79,8 @@ const ScrollableList: React.FC<IPropsScrollableList> = (props) => {
   }, [isVisible, scrollToHandler])
 
 
+  console.log('Render state:', { isVisible, loading, storiesCount: stories?.length, error })
+
   if (error) return <Error error={error} />
 
   return (isVisible && !loading && (
