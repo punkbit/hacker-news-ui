@@ -1,7 +1,7 @@
 {
-  "name": "react-hn-reader",
+  "name": "@punkbit/react-hn-reader",
   "version": "1.0.0",
-  "description": "A reusable React component for displaying Hacker News stories with beautiful parallax scrolling",
+  "description": "An experimental React component for displaying Hacker News stories with beautiful parallax scrolling",
   "author": "Punkbit",
   "license": "MIT",
   "type": "module",
