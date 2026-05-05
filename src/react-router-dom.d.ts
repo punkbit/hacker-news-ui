@@ -32,4 +32,7 @@ declare module 'react-router-dom' {
   export function useLocation(): any;
   export function useParams(): any;
   export function useRouteMatch(path?: string): any;
+  
+  // Default exports for destructuring
+  export default BrowserRouter;
 }
