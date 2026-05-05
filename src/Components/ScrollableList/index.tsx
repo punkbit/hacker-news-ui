@@ -62,19 +62,25 @@ const ScrollableList: React.FC<IPropsScrollableList> = (props) => {
     setIsVisible(true)
   }, [setIsVisible])
 
-  // Use a timeout to ensure DOM is updated before measuring
+  // Measure height when ref is attached and stories are loaded
+  const measureHeight = useCallback(() => {
+    const measuredHeight = contentRef.current?.clientHeight
+    if (measuredHeight && measuredHeight > 0) {
+      const newHeight = measuredHeight * 1.15
+      console.log('Height measured:', { measuredHeight, newHeight })
+      setHeight(newHeight)
+    }
+  }, [])
+
+  // Measure when stories change or loading completes
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const measuredHeight = contentRef.current?.clientHeight
-      console.log('Height calculation (delayed):', { measuredHeight, contentRef: contentRef.current, storiesLoaded: stories?.length })
-      if (measuredHeight && measuredHeight > 0) {
-        const newHeight = measuredHeight * 1.15
-        console.log('Setting height to:', newHeight)
-        setHeight(newHeight)
-      }
-    }, 100) // Small delay to let React render the DOM
-    return () => clearTimeout(timer)
-  }, [isVisible, stories, loading])
+    if (isVisible && !loading && stories.length > 0) {
+      // Use requestAnimationFrame to ensure DOM is painted
+      requestAnimationFrame(() => {
+        measureHeight()
+      })
+    }
+  }, [isVisible, loading, stories, measureHeight])
 
   useEffect(() => {
     scrollToHandler()
@@ -88,7 +94,7 @@ const ScrollableList: React.FC<IPropsScrollableList> = (props) => {
   }, [isVisible, scrollToHandler])
 
 
-  console.log('Render state:', { isVisible, loading, storiesCount: stories?.length, height, scrollY: window.scrollY, error })
+  console.log('Render state:', { isVisible, loading, storiesCount: stories?.length, height, error })
 
   if (error) return <Error error={error} />
 
