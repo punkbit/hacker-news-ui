@@ -78,8 +78,6 @@ function App() {
 </ThemeProvider>
 ```
 
-**Note:** Don't forget to load Google Fonts in your HTML (see [Fonts](#fonts) section).
-
 ### Custom API
 
 ```tsx
@@ -99,21 +97,16 @@ function App() {
 
 ## Fonts
 
-The component uses these Google Fonts (you must load them in your HTML):
+The component uses these Google Fonts (you must load them in your HTML `<head>`):
 - **Bitter** - Primary text font
 - **Work Sans** - Headings  
 - **Nanum Gothic** - Author names
 
-**Load via HTML `<link>` tag (recommended):**
+Add this to your HTML `<head>`:
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Nanum+Gothic:wght@400;700&family=Work+Sans:wght@400;700&display=swap" rel="stylesheet">
-```
-
-**Or load via CSS @import:**
-```css
-@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Nanum+Gothic:wght@400;700&family=Work+Sans:wght@400;700&display=swap');
 ```
 
 ## Development
