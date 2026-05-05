@@ -8,13 +8,22 @@ declare module 'styled-components' {
 
 declare module 'react-router-dom' {
   export const BrowserRouter: any;
-  export const Router: any;
-  export const Switch: any;
+  export const Routes: any;
   export const Route: any;
   export const Link: any;
-  export const useHistory: any;
+  export const useNavigate: any;
   export const useLocation: any;
   export const useParams: any;
-  export const useRouteMatch: any;
   export default BrowserRouter;
+}
+
+// Asset imports
+declare module '*.svg' {
+  const content: string;
+  export default content;
+}
+
+declare module '*.png' {
+  const content: string;
+  export default content;
 }
