@@ -1,6 +1,21 @@
-# react-hn-reader
+# Hacker News Reader
 
-A reusable React component for displaying Hacker News stories with parallax scrolling effects.
+An experimental Hacker News reader built with React, TypeScript, and modern tooling. Features parallax scrolling effects and a polished UX.
+
+![Hacker News Reader](https://img.shields.io/badge/HN-Reader-ff6600)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?logo=vite)
+
+## Overview
+
+This project is a modern Hacker News reader that consumes data directly from the [Hacker News Firebase REST API](https://github.com/HackerNews/API). It features:
+
+- ✨ A parallax-like scrolling inspired in starwars
+- ⚡ Lightning-fast development with Vite
+- 🎨 Customizable themes via styled-components
+- 📱 Responsive design
+- 🔧 Full TypeScript support
 
 ## Installation
 
@@ -11,6 +26,20 @@ npm install react-hn-reader styled-components
 **Peer dependencies:** react >=16.8, react-dom >=16.8, styled-components >=5.0
 
 ## Quick Start
+
+```bash
+# Install dependencies
+yarn install
+
+# Start development server
+yarn dev
+
+# Build for production
+yarn build
+
+# Preview production build
+yarn preview
+```
 
 ```tsx
 import { HackerNewsReader, ThemeProvider } from 'react-hn-reader'
@@ -61,22 +90,3 @@ function App() {
   onStoryClick={(story) => console.log(story.title)}
 />
 ```
-
-## Development
-
-```bash
-npm install
-npm run build    # Build package
-npm run dev      # Development mode
-```
-
-## Publish
-
-```bash
-npm run build
-npm publish
-```
-
-## License
-
-MIT

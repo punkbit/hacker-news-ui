@@ -3,8 +3,12 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
+  // Serve dev app in development mode, build library in production
+  ...(mode === 'development' && {
+    root: 'dev',
+  }),
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
@@ -31,4 +35,4 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   }
-})
+}))
