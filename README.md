@@ -1,21 +1,6 @@
-# Hacker News Reader
+# react-hn-reader
 
-An experimental Hacker News reader built with React, TypeScript, and modern tooling. Features parallax scrolling effects and a polished UX.
-
-![Hacker News Reader](https://img.shields.io/badge/HN-Reader-ff6600)
-![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript)
-![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?logo=vite)
-
-## Overview
-
-This project is a modern Hacker News reader that consumes data directly from the [Hacker News Firebase REST API](https://github.com/HackerNews/API). It features:
-
-- ✨ A parallax-like scrolling inspired in starwars
-- ⚡ Lightning-fast development with Vite
-- 🎨 Customizable themes via styled-components
-- 📱 Responsive design
-- 🔧 Full TypeScript support
+A reusable React component for displaying Hacker News stories with beautiful parallax scrolling effects.
 
 ## Installation
 
@@ -27,31 +12,29 @@ npm install react-hn-reader styled-components
 
 ## Quick Start
 
-```bash
-# Install dependencies
-yarn install
-
-# Start development server
-yarn dev
-
-# Build for production
-yarn build
-
-# Preview production build
-yarn preview
-```
+**Important:** You must include `DefaultStyles` for proper typography and styling:
 
 ```tsx
-import { HackerNewsReader, ThemeProvider } from 'react-hn-reader'
+import { HackerNewsReader, ThemeProvider, DefaultStyles } from 'react-hn-reader'
 
 function App() {
   return (
     <ThemeProvider>
+      <DefaultStyles />
       <HackerNewsReader />
     </ThemeProvider>
   )
 }
 ```
+
+## Features
+
+- ✨ **Parallax scrolling** - 3D depth effect with three viewport layers
+- 🖱️ **Scroll indicator** - Animated mouse icon in top-right (fades on scroll)
+- 🖤 **Fixed black logo** - Appears at bottom-right when scrolling down
+- ➡️ **Arrow icons** - Each story displays an arrow-out icon
+- 🎨 **Customizable themes** - Override all colors via ThemeProvider
+- 🔧 **TypeScript** - Full type support
 
 ## Props
 
@@ -70,6 +53,7 @@ function App() {
 
 ```tsx
 <ThemeProvider theme={{ orange: '#ff4500', onyx: '#1a1a1a' }}>
+  <DefaultStyles />
   <HackerNewsReader />
 </ThemeProvider>
 ```
@@ -90,3 +74,36 @@ function App() {
   onStoryClick={(story) => console.log(story.title)}
 />
 ```
+
+## Requirements
+
+**Fonts:** The component uses Google Fonts (loaded automatically):
+- 'Bitter' - Primary text font
+- 'Work Sans' - Headings
+- 'Nanum Gothic' - Author names
+
+Include in your HTML head:
+```html
+<style>
+  @import url('https://fonts.googleapis.com/css?family=Bitter|Nanum+Gothic|Work+Sans&display=swap');
+</style>
+```
+
+## Development
+
+```bash
+npm install
+npm run build    # Build package
+npm run dev      # Development mode with example
+```
+
+## Publish
+
+```bash
+npm run build
+npm publish
+```
+
+## License
+
+MIT
