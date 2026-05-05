@@ -63,6 +63,8 @@ function App() {
 | `onStoryClick` | `(story) => void` | - | Click handler |
 | `theme` | `object` | - | Override theme colors |
 | `renderStory` | `(story, index) => ReactNode` | - | Custom story renderer |
+| `selfContained` | `boolean` | false | Enable internal scrolling container (see below) |
+| `scrollContainerHeight` | `string \| number` | '100vh' | Height of scrollable area when selfContained is true |
 
 ## Usage Examples
 
@@ -91,6 +93,33 @@ function App() {
   onStoryClick={(story) => console.log(story.title)}
 />
 ```
+
+### Self-Contained Mode (Astro, iframes, overflow: hidden)
+
+When the component is used in a parent container with `overflow: hidden` (like Astro.js with scoped styles) or inside an iframe, the parallax scrolling won't work because the window can't scroll. Use `selfContained` mode to create an internal scrollable container:
+
+```tsx
+// For Astro.js or any container with overflow: hidden
+<HackerNewsReader selfContained={true} />
+
+// Custom scroll container height (default is 100vh)
+<HackerNewsReader 
+  selfContained={true} 
+  scrollContainerHeight="600px" 
+/>
+
+// Or use a number for pixels
+<HackerNewsReader 
+  selfContained={true} 
+  scrollContainerHeight={800} 
+/>
+```
+
+**When to use self-contained mode:**
+- **Astro.js**: When the page has scoped styles with `overflow: hidden`
+- **iframes**: When mounted inside an iframe for isolation
+- **Modals/Dialogs**: When the component is inside a fixed container
+- **Overflow hidden parents**: When any ancestor has `overflow: hidden` on html/body
 
 ## Fonts
 

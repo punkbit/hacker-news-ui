@@ -57,6 +57,12 @@ export interface HackerNewsReaderProps {
   enableLoadMore?: boolean
   onStoryClick?: (story: StoryData) => void
   
+  // Self-contained scrolling mode
+  // Use this when the parent container has overflow: hidden
+  // or when mounting in an iframe
+  selfContained?: boolean
+  scrollContainerHeight?: string | number
+  
   // Custom rendering (optional)
   renderStory?: (story: StoryData, index: number) => React.ReactNode
   renderLoading?: () => React.ReactNode

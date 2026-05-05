@@ -83,6 +83,32 @@ const BlackLogoContainer = styled.div<{ hide: boolean }>`
   }
 `
 
+// Self-contained scroll wrapper - used when parent has overflow: hidden
+const SelfContainedWrapper = styled.div<{ height: string | number }>`
+  position: relative;
+  height: ${(props) => typeof props.height === 'number' ? `${props.height}px` : props.height};
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  
+  /* Hide scrollbar for cleaner look */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 102, 0, 0.3) transparent;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 102, 0, 0.3);
+    border-radius: 4px;
+  }
+`
+
 // Constants for scroll calculations
 const SCROLL_CONTAINER_TOP_RATIO = 0.398
 const SCROLL_CONTAINER_BOTTOM_RATIO = 0.3
@@ -96,7 +122,9 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
   renderStory,
   renderLoading,
   renderError,
-  renderLogo
+  renderLogo,
+  selfContained = false,
+  scrollContainerHeight = '100vh'
 }) => {
   const [height, setHeight] = useState<number>(0)
   const [scrollPosition, setScrollPosition] = useState({
@@ -107,6 +135,7 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [hideScrollTip, setHideScrollTip] = useState<boolean>(false)
   const contentRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
   
   const { loading, error, stories, fetchMore } = useStories({
     apiUrl,
@@ -114,9 +143,21 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
   })
 
   const scrollToHandler = useCallback(() => {
-    const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop
-    const offsetTop = window.innerHeight * SCROLL_CONTAINER_TOP_RATIO
-    const offsetBottom = window.innerHeight * SCROLL_CONTAINER_BOTTOM_RATIO
+    let scrollY: number
+    let containerHeight: number
+    
+    if (selfContained && scrollContainerRef.current) {
+      // Use container's scroll position in self-contained mode
+      scrollY = scrollContainerRef.current.scrollTop
+      containerHeight = scrollContainerRef.current.clientHeight
+    } else {
+      // Use window scroll position in normal mode
+      scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop
+      containerHeight = window.innerHeight
+    }
+    
+    const offsetTop = containerHeight * SCROLL_CONTAINER_TOP_RATIO
+    const offsetBottom = containerHeight * SCROLL_CONTAINER_BOTTOM_RATIO
     
     setScrollPosition({
       top: { y: -(scrollY - offsetTop) },
@@ -125,9 +166,9 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
     })
     
     // Hide scroll tip after scrolling past screen height
-    const hide = scrollY > (window.screen.availHeight * 1.1)
+    const hide = scrollY > (containerHeight * 1.1)
     setHideScrollTip(hide)
-  }, [])
+  }, [selfContained])
 
   const measureHeight = useCallback(() => {
     const measuredHeight = contentRef.current?.clientHeight
@@ -156,11 +197,21 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
   }, [isVisible, scrollToHandler])
 
   useEffect(() => {
-    window.addEventListener('scroll', scrollToHandler)
-    return () => {
-      window.removeEventListener('scroll', scrollToHandler)
+    if (selfContained && scrollContainerRef.current) {
+      // In self-contained mode, listen to container scroll
+      const container = scrollContainerRef.current
+      container.addEventListener('scroll', scrollToHandler)
+      return () => {
+        container.removeEventListener('scroll', scrollToHandler)
+      }
+    } else {
+      // In normal mode, listen to window scroll
+      window.addEventListener('scroll', scrollToHandler)
+      return () => {
+        window.removeEventListener('scroll', scrollToHandler)
+      }
     }
-  }, [scrollToHandler])
+  }, [scrollToHandler, selfContained])
 
   const loadMoreHandler = useCallback(() => {
     if (enableLoadMore) {
@@ -212,7 +263,7 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
     return <LoadingState />
   }
 
-  return (
+  const content = (
     <>
       <ScrollDownTip hide={hideScrollTip} />
       <ScrollWrapper height={height} className={className}>
@@ -267,6 +318,21 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
       </BlackLogoContainer>
     </>
   )
+
+  // In self-contained mode, wrap with scrollable container
+  if (selfContained) {
+    return (
+      <SelfContainedWrapper 
+        ref={scrollContainerRef} 
+        height={scrollContainerHeight}
+      >
+        {content}
+      </SelfContainedWrapper>
+    )
+  }
+
+  // Normal mode - no wrapper
+  return content
 }
 
 export default HackerNewsReader
