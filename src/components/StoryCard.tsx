@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import type { StoryData, Theme } from '../types'
+import ArrowOut from '../Icons/ArrowOut'
+import type { StoryData } from '../types'
 
 interface StoryCardProps {
   story: StoryData
@@ -8,73 +9,54 @@ interface StoryCardProps {
   onClick?: (story: StoryData) => void
 }
 
-interface StyledProps {
-  theme: Theme
-}
-
-const StoryContainer = styled.div<StyledProps>`
+const StoryContainer = styled.div`
   display: flex;
   align-items: flex-start;
   cursor: pointer;
-  transition: opacity 0.3s;
+  margin-bottom: 10rem;
+  transition: background 0.3s;
+  position: relative;
 
   &:hover {
-    opacity: 0.68;
+    background: ${(props) => props.theme.orange};
+
+    & span {
+      opacity: 0.7;
+    }
   }
 
-  &:hover .hn-reader__story-author {
+  & > svg {
+    position: relative;
+    width: 14rem;
+  }
+
+  & span {
+    position: absolute;
+    bottom: -3rem;
+    right: 0;
     font-size: 2rem;
-    opacity: 1;
+    opacity: 0;
+    background: ${(props) => props.theme.platinum};
   }
 `
 
-const StoryTitle = styled.a<StyledProps>`
-  font-family: 'Bitter', serif;
-  font-weight: 600;
-  color: ${(props) => props.theme.onyx || '#313638'};
-  text-decoration: none;
-  transition: all 0.3s;
+const StoryTitle = styled.div``
 
-  &:hover {
-    text-decoration: underline;
-  }
-`
-
-const StoryAuthor = styled.span<StyledProps>`
-  font-family: 'Nanum Gothic', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 100;
-  margin-left: 0.5rem;
-  transition: all 0.3s;
-  opacity: 0;
-  background: ${(props) => props.theme.platinum || '#E8E9EB'};
-`
-
-const StoryCard: React.FC<StoryCardProps> = ({ story, index, onClick }) => {
-  const handleClick = () => {
+const StoryCard: React.FC<StoryCardProps> = ({ story, onClick }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault()
     if (onClick) {
       onClick(story)
+    } else {
+      window.open(story.url, '_blank')
     }
   }
 
   return (
     <StoryContainer onClick={handleClick}>
-      <StoryTitle
-        href={story.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={(e) => {
-          if (onClick) {
-            e.preventDefault()
-            handleClick()
-          }
-        }}
-      >
-        {story.title}
-      </StoryTitle>
-      <StoryAuthor className="hn-reader__story-author">
-        {story.by.id}
-      </StoryAuthor>
+      <StoryTitle>{story.title}</StoryTitle>
+      <ArrowOut />
+      <span>{story.by.id}</span>
     </StoryContainer>
   )
 }

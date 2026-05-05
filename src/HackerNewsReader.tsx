@@ -5,7 +5,7 @@ import StoryCard from './components/StoryCard'
 import LoadingState from './components/LoadingState'
 import ErrorState from './components/ErrorState'
 import CtaButton from './components/CtaButton'
-import Logo from './components/Logo'
+import Logo from './Icons/Logo'
 import type { HackerNewsReaderProps, StoryData } from './types'
 
 // Styled components
