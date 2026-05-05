@@ -27,12 +27,7 @@ npm install react-hn-reader styled-components
 
 ## Quick Start
 
-**Important:** You must include `DefaultStyles` for proper typography and styling. Also load the Google Fonts in your HTML:
-
-```html
-<!-- Add to your HTML <head> -->
-<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Nanum+Gothic:wght@400;700&family=Work+Sans:wght@400;700&display=swap" rel="stylesheet">
-```
+**Important:** You must include `DefaultStyles` for proper typography and styling:
 
 ```tsx
 import { HackerNewsReader, ThemeProvider, DefaultStyles } from 'react-hn-reader'
@@ -46,6 +41,8 @@ function App() {
   )
 }
 ```
+
+✅ **Fonts are loaded automatically** - Google Fonts (Bitter, Work Sans, Nanum Gothic) are injected dynamically when the component mounts.
 
 ## Features
 
@@ -97,17 +94,12 @@ function App() {
 
 ## Fonts
 
-The component uses these Google Fonts (you must load them in your HTML `<head>`):
+Google Fonts are loaded **automatically** when the component mounts:
 - **Bitter** - Primary text font
 - **Work Sans** - Headings  
 - **Nanum Gothic** - Author names
 
-Add this to your HTML `<head>`:
-```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Nanum+Gothic:wght@400;700&family=Work+Sans:wght@400;700&display=swap" rel="stylesheet">
-```
+No manual configuration needed!
 
 ## Development
 

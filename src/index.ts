@@ -3,7 +3,7 @@ export { default as HackerNewsReader } from './HackerNewsReader'
 export { default as ThemeProvider } from './styles/ThemeProvider'
 
 // Global styles for typography
-export { DefaultStyles, themeConf } from './styles/globalStyles'
+export { DefaultStyles, themeConf, loadFonts } from './styles/globalStyles'
 
 // Types
 export type {

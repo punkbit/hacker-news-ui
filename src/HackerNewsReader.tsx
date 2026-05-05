@@ -7,6 +7,7 @@ import ErrorState from './components/ErrorState'
 import CtaButton from './components/CtaButton'
 import ScrollDownTip from './components/ScrollDownTip'
 import Logo from './Icons/Logo'
+import { loadFonts } from './styles/globalStyles'
 import type { HackerNewsReaderProps, StoryData } from './types'
 
 // Styled components
@@ -137,6 +138,8 @@ const HackerNewsReader: React.FC<HackerNewsReaderProps> = ({
   }, [])
 
   useEffect(() => {
+    // Load Google Fonts automatically
+    loadFonts()
     setIsVisible(true)
   }, [])
 
