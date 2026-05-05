@@ -109,6 +109,32 @@ npm run build    # Build package
 npm run dev      # Development mode with example
 ```
 
+### Local Testing with Preview Build
+
+Build a standalone preview version that bundles React and all dependencies:
+
+```bash
+npm run build:preview    # Build standalone preview to dist/preview/
+npm run serve            # Serve with http-server on http://localhost:8080
+```
+
+Or manually:
+
+```bash
+npm run build:preview
+npx http-server ./dist/preview -p 8080 -o
+```
+
+The preview build is a fully self-contained version that doesn't require external React dependencies, making it perfect for testing the component in isolation before publishing.
+
+### Build Everything
+
+To build both the library and preview at once:
+
+```bash
+npm run build:all   # Builds preview first, then library
+```
+
 ## Publish
 
 ```bash
